@@ -7,19 +7,6 @@ import Frame from './Frame'
 import Header from "./header"
 import "./layout.css"
 
-setGlobal({
-  styles: {
-    units: {
-      main: 75,
-    },
-    colors: {
-      bg_1: `#000000`,
-      fg_1: `#ffffff`
-    },
-  },
-})
-
-
 const useStyles = makeStyles({
   wrapper: {
     width: `100%`,
@@ -41,20 +28,37 @@ const Layout = ({ children }) => {
       }
     }
   `)
+
+  const siteData = data.site.siteMetadata
+
+  setGlobal({
+    styles: {
+      units: {
+        main: 75,
+      },
+      colors: {
+        bg_1: `#000000`,
+        fg_1: `#ffffff`
+      },
+    },
+  })
+
   const style = useGlobal()
+
   return (
-  <>
-    <Frame>
-      <Header siteTitle={data.site.siteMetadata.title} />
+    <>
+      <Frame data={siteData}>
+        <Header title={siteData.title} />
         <div className={'page-content'}>
           <main>{children}</main>
           <footer>
-          © 2002 — {new Date().getFullYear()}
-        </footer>
+            © 2002 — {new Date().getFullYear()}
+          </footer>
         </div>
       </Frame>
     </>
   )
+
 }
 
 Layout.propTypes = {
