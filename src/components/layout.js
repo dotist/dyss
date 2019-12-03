@@ -1,9 +1,9 @@
-import React, { useGlobal, setGlobal  } from "reactn"
+import React, { useGlobal, setGlobal } from "reactn"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles"
 
-import Frame from './Frame'
+import Frame from "./Frame"
 import Header from "./header"
 import "./layout.css"
 
@@ -14,8 +14,7 @@ const useStyles = makeStyles({
     // padding: `{${styleVars.units.main}px}`,
     position: `absolute`,
     // color: styleVars.colors.fg_1,
-
-  }
+  },
 })
 
 const Layout = ({ children }) => {
@@ -32,33 +31,28 @@ const Layout = ({ children }) => {
   const siteData = data.site.siteMetadata
 
   setGlobal({
-    styles: {
+    styleVars: {
       units: {
         main: 75,
       },
       colors: {
         bg_1: `#000000`,
-        fg_1: `#ffffff`
+        fg_1: `#ffffff`,
       },
     },
   })
-
-  const style = useGlobal()
 
   return (
     <>
       <Frame data={siteData}>
         <Header title={siteData.title} />
-        <div className={'page-content'}>
+        <div className={"page-content"}>
           <main>{children}</main>
-          <footer>
-            © 2002 — {new Date().getFullYear()}
-          </footer>
+          <footer>© 2002 — {new Date().getFullYear()}</footer>
         </div>
       </Frame>
     </>
   )
-
 }
 
 Layout.propTypes = {

@@ -1,34 +1,48 @@
 import React, { useGlobal } from "reactn"
 import PropTypes from "prop-types"
-import Trap from './Trap'
+import Trap from "./Trap"
 import { styled, makeStyles } from "@material-ui/core/styles"
 import { Container, Typography } from "@material-ui/core"
 import * as utils from "../utils.js"
 
 const Frame = props => {
   const { children, data, ...other } = props
-  const styles = utils.getState('styles')
-  // console.log(props)
-  // console.log(styles)
-  const unit = styles.units.main
-  const baseStyles = {
-    top: 0,
-    left: 0,
-    fg: styles.colors.fg_1,
-    bg: styles.colors.bg_1,
-  }
+  const styleVars = utils.getState("styleVars")
+  const unit = styleVars.units.main
   const elements = {
     top: {
-      string: '1',
-      styles: {...baseStyles},
+      styles: {
+        top: 0,
+        left: 0,
+        height: `${unit}px`,
+        width: `100%`,
+        padding: 0,
+      },
     },
     right: {
-      string: '2',
-      styles: {...baseStyles, ...{
-        transform: 'rotate(70deg) translate(0, -100%)',
-        transformOrigin: 'right bottom',
-      }},
-    }
+      styles: {
+        right: 0,
+        top: 0,
+        height: `100%`,
+        width: `${unit}px`,
+      },
+    },
+    bottom: {
+      styles: {
+        right: 0,
+        bottom: 0,
+        width: `100%`,
+        height: `${unit}px`,
+      },
+    },
+    left: {
+      styles: {
+        left: 0,
+        top: 0,
+        height: `100%`,
+        width: `${unit}px`,
+      },
+    },
   }
 
   return (
@@ -37,21 +51,27 @@ const Frame = props => {
         const element = elements[key]
         const RenderElement = () => {
           switch (key) {
-            case 'top':
-              return <h1 style={{
-                color: styles.colors.fg_1,
-                fontSize: `${styles.units.main}px`,
-                lineHeight: `${styles.units.main}px`,
-                textTransform: `uppercase`,
-                fontStyle: `italic`,
-              }}>{element.string}</h1>
+            case "top":
+              return (
+                <h1
+                  style={{
+                    color: styleVars.colors.fg_1,
+                    fontSize: `${unit}px`,
+                    lineHeight: `${unit}px`,
+                    textTransform: `uppercase`,
+                    fontStyle: `italic`,
+                  }}
+                >
+                  {key}
+                </h1>
+              )
             default:
-             return element.string
-            }
+              return key
+          }
         }
         return (
-          <Trap key={key} element={element}>
-            <RenderElement/>
+          <Trap key={key} element={element} styleVars={styleVars} index={key}>
+            <RenderElement />
           </Trap>
         )
       })}
