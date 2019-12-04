@@ -20,29 +20,31 @@ const Trap = props => {
       width: nearHeight,
       height: 0,
       right: half,
-      transform: `translateX(-${half})`,
+      transform: `translateX(${half})`,
     },
     right: {
       borderColor: `transparent ${bg_color} transparent transparent`,
       borderWidth: `${unit}px ${unit}px ${unit}px 0`,
       width: `${unit}px`,
-      height: `99%`,
-      top: `50%`,
-      transform: `translateY(-50%)`,
+      height: nearHeight,
+      top: half,
+      transform: `translateY(-${half})`,
     },
     bottom: {
       borderColor: `transparent transparent ${bg_color} transparent`,
       borderWidth: `0 ${unit}px ${unit}px ${unit}px`,
       height: 0,
-      width: `99%`,
+      width: nearHeight,
+      right: half,
+      transform: `translateX(${half})`,
     },
     left: {
       borderColor: `transparent transparent transparent ${bg_color}`,
       borderWidth: `${unit}px 0 ${unit}px ${unit}px`,
       width: `${unit}px`,
-      height: `99%`,
-      top: `50%`,
-      transform: `translateY(-50%)`,
+      height: nearHeight,
+      top: half,
+      transform: `translateY(-${half})`,
     },
   }
   const trapStyles = {
@@ -59,19 +61,27 @@ const Trap = props => {
       // border: `1px solid pink`,
     },
   }
-  const TrapInner = styled(Container)({
+  const TrapElement = styled(Container)(trapStyles)
+  const TrapShape = styled(Container)({
     ...trapElements[index],
     ...{
       position: `absolute`,
       borderStyle: `solid`,
       padding: 0,
       margin: `auto`,
+      color: `transparent`,
     },
   })
-  const TrapElement = styled(Container)(trapStyles)
-  // return <TrapElement maxWidth={false}>this</TrapElement>
+  const TrapInner = styled(Container)({
+    width: `100%`,
+    height: `100%`,
+    position: `absolute`,
+    zIndex: 1,
+    textAlign: `center`,
+  })
   return (
     <TrapElement maxWidth={false}>
+      <TrapShape maxWidth={false}>&nbsp;</TrapShape>
       <TrapInner maxWidth={false}>{children}</TrapInner>
     </TrapElement>
   )

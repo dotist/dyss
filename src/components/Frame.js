@@ -66,7 +66,19 @@ const Frame = props => {
                 </h1>
               )
             default:
-              return key
+              return (
+                <h3
+                  style={{
+                    color: styleVars.colors.fg_1,
+                    // fontSize: `${unit}px`,
+                    // lineHeight: `${unit}px`,
+                    // textTransform: `uppercase`,
+                    fontStyle: `italic`,
+                  }}
+                >
+                  {key}
+                </h3>
+              )
           }
         }
         return (
