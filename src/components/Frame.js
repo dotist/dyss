@@ -11,6 +11,7 @@ const Frame = props => {
   const unit = styleVars.units.main
   const elements = {
     top: {
+      children: data.title,
       styles: {
         top: 0,
         left: 0,
@@ -20,6 +21,7 @@ const Frame = props => {
       },
     },
     right: {
+      rotate: `180deg`,
       styles: {
         right: 0,
         top: 0,
@@ -28,6 +30,8 @@ const Frame = props => {
       },
     },
     bottom: {
+      children: data.footer,
+      rotate: `180deg`,
       styles: {
         right: 0,
         bottom: 0,
@@ -36,6 +40,7 @@ const Frame = props => {
       },
     },
     left: {
+      rotate: `0deg`,
       styles: {
         left: 0,
         top: 0,
@@ -49,35 +54,45 @@ const Frame = props => {
     <>
       {Object.keys(elements).map(key => {
         const element = elements[key]
+        console.log(element)
         const RenderElement = () => {
+          const typoStyles = {
+            color: styleVars.colors.fg_1,
+            lineHeight: `${unit}px`,
+            textTransform: `uppercase`,
+            fontStyle: `italic`,
+            letterSpacing: `15px`,
+          }
           switch (key) {
             case "top":
               return (
                 <h1
                   style={{
-                    color: styleVars.colors.fg_1,
-                    fontSize: `${unit}px`,
-                    lineHeight: `${unit}px`,
-                    textTransform: `uppercase`,
-                    fontStyle: `italic`,
+                    ...typoStyles,
+                    ...{
+                      fontSize: `${unit}px`,
+                    },
                   }}
                 >
-                  {key}
+                  {element.children}
                 </h1>
               )
             default:
               return (
-                <h3
+                <Typography
+                  variant="h4"
                   style={{
-                    color: styleVars.colors.fg_1,
-                    // fontSize: `${unit}px`,
-                    // lineHeight: `${unit}px`,
-                    // textTransform: `uppercase`,
-                    fontStyle: `italic`,
+                    ...typoStyles,
+                    ...{
+                      color: styleVars.colors.fg_1,
+                      position: `relative`,
+                      top: `50%`,
+                      transform: `translateY(-50%) rotate(${element.rotate})`,
+                    },
                   }}
                 >
-                  {key}
-                </h3>
+                  {element.children || key}
+                </Typography>
               )
           }
         }

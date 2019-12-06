@@ -1,12 +1,11 @@
 import React, { useGlobal, useState, useEffect } from "react"
 import PropTypes from "prop-types"
-import { styled, makeStyles } from "@material-ui/core/styles"
+import { styled, makeStyles, createMuiTheme } from "@material-ui/core/styles"
 import { Container, Typography } from "@material-ui/core"
 import * as utils from "../utils.js"
 
 const Trap = props => {
   const { children, element, styleVars, index, ...other } = props
-  console.log(other)
   const unit = styleVars.units.main
   const bg_color = styleVars.colors.bg_1
 
@@ -51,23 +50,17 @@ const Trap = props => {
     ...element.styles,
     // ...trapElements[index],
     ...{
-      // test styles
       position: `absolute`,
       padding: 0,
-      // background: `yellow`,
-      // borderColor: `${styleVars.colors.bg_1} transparent transparent transparent`,
-      // borderWidth: `${unit}px ${unit}px 0 ${unit}px`,
-      // borderStyle: `solid`,
-      // border: `1px solid pink`,
     },
   }
   const TrapElement = styled(Container)(trapStyles)
   const TrapShape = styled(Container)({
     ...trapElements[index],
     ...{
+      padding: 0,
       position: `absolute`,
       borderStyle: `solid`,
-      padding: 0,
       margin: `auto`,
       color: `transparent`,
     },
@@ -78,6 +71,7 @@ const Trap = props => {
     position: `absolute`,
     zIndex: 1,
     textAlign: `center`,
+    padding: 0,
   })
   return (
     <TrapElement maxWidth={false}>
