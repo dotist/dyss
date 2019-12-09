@@ -2,6 +2,7 @@ import React, { useGlobal, setGlobal } from "reactn"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import { makeStyles } from "@material-ui/core/styles"
+import { Container, Typography } from "@material-ui/core"
 import * as utils from "../utils.js"
 import Frame from "./Frame"
 import Header from "./header"
@@ -40,25 +41,40 @@ const Layout = ({ children }) => {
     },
   }
 
+  const typoStyles = {
+    color: styleVars.colors.fg_1,
+    lineHeight: `${styleVars.units.main}px`,
+    textTransform: `uppercase`,
+    fontStyle: `italic`,
+    letterSpacing: `15px`,
+  }
+
   setGlobal({
     styleVars: styleVars,
+    typoStyles: typoStyles,
   })
 
   siteData.footer = `© 2002 — ` + new Date().getFullYear()
-
+  // siteData.right = `immer`
+  // siteData.left = `werdender`
+  siteData.right = ``
+  siteData.left = ``
   return (
     <>
       <Frame data={siteData}>
         <Header title={siteData.title} />
-        <div style={{ margin: `100px 0 0 0` }}>
+        <div style={{}}>
           <h1
             style={{
-              color: styleVars.colors.bg_1,
-              fontSize: `${styleVars.units.main}px`,
-              lineHeight: `${styleVars.units.main}px`,
-              textTransform: `uppercase`,
-              fontStyle: `italic`,
-              textAlign: `center`,
+              ...typoStyles,
+              ...{
+                color: styleVars.colors.bg_1,
+                fontSize: `${styleVars.units.main}px`,
+                lineHeight: `${styleVars.units.main}px`,
+                // textTransform: `uppercase`,
+                fontStyle: `italic`,
+                textAlign: `center`,
+              },
             }}
           >
             {siteData.title}
@@ -66,7 +82,30 @@ const Layout = ({ children }) => {
         </div>
         <div className={"page-content"}>
           <main>{children}</main>
-          <footer>{siteData.footer}</footer>
+          <footer
+            style={{
+              position: `absolute`,
+              left: 0,
+              bottom: 0,
+              width: `100%`,
+            }}
+          >
+            <Typography
+              variant="h5"
+              style={{
+                ...typoStyles,
+                ...{
+                  width: `100%`,
+                  textAlign: `center`,
+                  color: styleVars.colors.bg_1,
+                  transform: `rotate(180deg)`,
+                  opacity: 0,
+                },
+              }}
+            >
+              {siteData.footer}
+            </Typography>
+          </footer>
         </div>
       </Frame>
     </>

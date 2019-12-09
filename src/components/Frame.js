@@ -1,4 +1,4 @@
-import React, { useGlobal } from "reactn"
+import React, { useGlobal, setGlobal } from "reactn"
 import PropTypes from "prop-types"
 import Trap from "./Trap"
 import { styled, makeStyles } from "@material-ui/core/styles"
@@ -9,6 +9,13 @@ const Frame = props => {
   const { children, data, ...other } = props
   const styleVars = utils.getState("styleVars")
   const unit = styleVars.units.main
+  const effects = {
+    top: false,
+    right: false,
+    bottom: false,
+    left: false,
+  }
+  setGlobal({ frameEffects: effects })
   const elements = {
     top: {
       children: data.title,
@@ -18,9 +25,11 @@ const Frame = props => {
         height: `${unit}px`,
         width: `100%`,
         padding: 0,
+        transform: effects.top ? `translateY(-${unit}px)` : ``,
       },
     },
     right: {
+      children: data.right,
       rotate: `180deg`,
       styles: {
         right: 0,
@@ -40,6 +49,7 @@ const Frame = props => {
       },
     },
     left: {
+      children: data.left,
       rotate: `0deg`,
       styles: {
         left: 0,
@@ -54,15 +64,8 @@ const Frame = props => {
     <>
       {Object.keys(elements).map(key => {
         const element = elements[key]
-        console.log(element)
         const RenderElement = () => {
-          const typoStyles = {
-            color: styleVars.colors.fg_1,
-            lineHeight: `${unit}px`,
-            textTransform: `uppercase`,
-            fontStyle: `italic`,
-            letterSpacing: `15px`,
-          }
+          const typoStyles = utils.getState("typoStyles")
           switch (key) {
             case "top":
               return (
@@ -80,7 +83,7 @@ const Frame = props => {
             default:
               return (
                 <Typography
-                  variant="h4"
+                  variant="h5"
                   style={{
                     ...typoStyles,
                     ...{
@@ -91,7 +94,7 @@ const Frame = props => {
                     },
                   }}
                 >
-                  {element.children || key}
+                  {element.children}
                 </Typography>
               )
           }

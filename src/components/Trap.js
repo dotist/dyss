@@ -48,10 +48,10 @@ const Trap = props => {
   }
   const trapStyles = {
     ...element.styles,
-    // ...trapElements[index],
     ...{
       position: `absolute`,
       padding: 0,
+      transition: `all 200ms`,
     },
   }
   const TrapElement = styled(Container)(trapStyles)
