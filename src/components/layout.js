@@ -7,14 +7,13 @@ import * as utils from "../utils.js"
 import Frame from "./Frame"
 import Header from "./header"
 import "./layout.css"
+import "./styles.sass"
 
 const useStyles = makeStyles({
   wrapper: {
     width: `100%`,
     height: `100%`,
-    // padding: `{${styleVars.units.main}px}`,
     position: `absolute`,
-    // color: styleVars.colors.fg_1,
   },
 })
 
@@ -48,10 +47,22 @@ const Layout = ({ children }) => {
     fontStyle: `italic`,
     letterSpacing: `15px`,
   }
-
+  const frameStyles = {
+    padding: 0,
+    position: `absolute`,
+    transition: "all 800ms ease-out",
+  }
+  const frameEffects = {
+    top: false,
+    right: false,
+    bottom: false,
+    left: false,
+  }
   setGlobal({
     styleVars: styleVars,
+    frameStyles: frameStyles,
     typoStyles: typoStyles,
+    frameEffects: frameEffects,
   })
 
   siteData.footer = `© 2002 — ` + new Date().getFullYear()
@@ -61,7 +72,13 @@ const Layout = ({ children }) => {
   siteData.left = ``
   return (
     <>
-      <Frame data={siteData}>
+      <Frame
+        data={siteData}
+        style={{
+          position: `relative`,
+          overflow: `hidden`,
+        }}
+      >
         <Header title={siteData.title} />
         <div style={{}}>
           <h1
@@ -71,7 +88,6 @@ const Layout = ({ children }) => {
                 color: styleVars.colors.bg_1,
                 fontSize: `${styleVars.units.main}px`,
                 lineHeight: `${styleVars.units.main}px`,
-                // textTransform: `uppercase`,
                 fontStyle: `italic`,
                 textAlign: `center`,
               },

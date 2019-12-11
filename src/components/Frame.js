@@ -1,4 +1,4 @@
-import React, { useGlobal, setGlobal } from "reactn"
+import React, { useGlobal, setGlobal, useEffect } from "reactn"
 import PropTypes from "prop-types"
 import Trap from "./Trap"
 import { styled, makeStyles } from "@material-ui/core/styles"
@@ -9,13 +9,40 @@ const Frame = props => {
   const { children, data, ...other } = props
   const styleVars = utils.getState("styleVars")
   const unit = styleVars.units.main
-  const effects = {
-    top: false,
-    right: false,
-    bottom: false,
-    left: false,
+  const [frameEffects, updateEffects] = useGlobal("frameEffects")
+
+  const frameLoop = duration => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(duration)
+      }, duration)
+    })
   }
-  setGlobal({ frameEffects: effects })
+  const duration = 100
+  useEffect(() => {
+    frameLoop(duration)
+      .then(result => {
+        frameEffects.top = !frameEffects.top
+        updateEffects(frameEffects)
+        return frameLoop(duration)
+      })
+      .then(result => {
+        frameEffects.right = !frameEffects.right
+        updateEffects(frameEffects)
+        return frameLoop(duration)
+      })
+      .then(result => {
+        frameEffects.bottom = !frameEffects.bottom
+        updateEffects(frameEffects)
+        return frameLoop(duration)
+      })
+      .then(result => {
+        frameEffects.left = !frameEffects.left
+        updateEffects(frameEffects)
+        return true
+      })
+  }, [true])
+
   const elements = {
     top: {
       children: data.title,
@@ -24,8 +51,10 @@ const Frame = props => {
         left: 0,
         height: `${unit}px`,
         width: `100%`,
-        padding: 0,
-        transform: effects.top ? `translateY(-${unit}px)` : ``,
+        transform:
+          frameEffects.top === true
+            ? `translateY(0)`
+            : `translateY(-${unit}px)`,
       },
     },
     right: {
@@ -36,6 +65,10 @@ const Frame = props => {
         top: 0,
         height: `100%`,
         width: `${unit}px`,
+        transform:
+          frameEffects.right == true
+            ? `translateX(0)`
+            : `translateX(${unit}px)`,
       },
     },
     bottom: {
@@ -46,6 +79,10 @@ const Frame = props => {
         bottom: 0,
         width: `100%`,
         height: `${unit}px`,
+        transform:
+          frameEffects.bottom == true
+            ? `translateY(0)`
+            : `translateY(${unit}px)`,
       },
     },
     left: {
@@ -56,6 +93,10 @@ const Frame = props => {
         top: 0,
         height: `100%`,
         width: `${unit}px`,
+        transform:
+          frameEffects.left == true
+            ? `translateX(0)`
+            : `translateX(-${unit}px)`,
       },
     },
   }
@@ -100,9 +141,11 @@ const Frame = props => {
           }
         }
         return (
-          <Trap key={key} element={element} styleVars={styleVars} index={key}>
-            <RenderElement />
-          </Trap>
+          <div className={"frame-element"}>
+            <Trap key={key} element={element} styleVars={styleVars} index={key}>
+              <RenderElement />
+            </Trap>
+          </div>
         )
       })}
       {children}

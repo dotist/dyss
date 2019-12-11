@@ -1,4 +1,4 @@
-import React, { useGlobal, useState, useEffect } from "react"
+import React, { useGlobal, useState, useEffect } from "reactn"
 import PropTypes from "prop-types"
 import { styled, makeStyles, createMuiTheme } from "@material-ui/core/styles"
 import { Container, Typography } from "@material-ui/core"
@@ -46,13 +46,10 @@ const Trap = props => {
       transform: `translateY(-${half})`,
     },
   }
+  const frameStyles = utils.getState("frameStyles")
   const trapStyles = {
     ...element.styles,
-    ...{
-      position: `absolute`,
-      padding: 0,
-      transition: `all 200ms`,
-    },
+    ...frameStyles,
   }
   const TrapElement = styled(Container)(trapStyles)
   const TrapShape = styled(Container)({
