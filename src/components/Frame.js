@@ -9,7 +9,7 @@ const Frame = props => {
   const { children, data, ...other } = props
   const styleVars = utils.getState("styleVars")
   const unit = styleVars.units.main
-  const [frameEffects, updateEffects] = useGlobal("frameEffects")
+  const [frameClasses, updateFrameClasses] = useGlobal("frameClasses")
 
   const frameLoop = duration => {
     return new Promise((resolve, reject) => {
@@ -19,26 +19,27 @@ const Frame = props => {
     })
   }
   const duration = 100
+  const frameClass = "frame-element-active"
   useEffect(() => {
     frameLoop(duration)
       .then(result => {
-        frameEffects.top = !frameEffects.top
-        updateEffects(frameEffects)
+        frameClasses.top = frameClass
+        updateFrameClasses(frameClasses)
         return frameLoop(duration)
       })
       .then(result => {
-        frameEffects.right = !frameEffects.right
-        updateEffects(frameEffects)
+        frameClasses.right = frameClass
+        updateFrameClasses(frameClasses)
         return frameLoop(duration)
       })
       .then(result => {
-        frameEffects.bottom = !frameEffects.bottom
-        updateEffects(frameEffects)
+        frameClasses.bottom = frameClass
+        updateFrameClasses(frameClasses)
         return frameLoop(duration)
       })
       .then(result => {
-        frameEffects.left = !frameEffects.left
-        updateEffects(frameEffects)
+        frameClasses.left = frameClass
+        updateFrameClasses(frameClasses)
         return true
       })
   }, [true])
@@ -51,10 +52,7 @@ const Frame = props => {
         left: 0,
         height: `${unit}px`,
         width: `100%`,
-        transform:
-          frameEffects.top === true
-            ? `translateY(0)`
-            : `translateY(-${unit}px)`,
+        transform: frameClasses.top ? "" : `translateY(-${unit}px)`,
       },
     },
     right: {
@@ -65,10 +63,7 @@ const Frame = props => {
         top: 0,
         height: `100%`,
         width: `${unit}px`,
-        transform:
-          frameEffects.right == true
-            ? `translateX(0)`
-            : `translateX(${unit}px)`,
+        transform: `translateX(${unit}px)`,
       },
     },
     bottom: {
@@ -79,10 +74,7 @@ const Frame = props => {
         bottom: 0,
         width: `100%`,
         height: `${unit}px`,
-        transform:
-          frameEffects.bottom == true
-            ? `translateY(0)`
-            : `translateY(${unit}px)`,
+        transform: `translateY(${unit}px)`,
       },
     },
     left: {
@@ -93,10 +85,7 @@ const Frame = props => {
         top: 0,
         height: `100%`,
         width: `${unit}px`,
-        transform:
-          frameEffects.left == true
-            ? `translateX(0)`
-            : `translateX(-${unit}px)`,
+        transform: `translateX(-${unit}px)`,
       },
     },
   }
@@ -141,7 +130,7 @@ const Frame = props => {
           }
         }
         return (
-          <div className={"frame-element"}>
+          <div className={frameClasses[key]} null key={key}>
             <Trap key={key} element={element} styleVars={styleVars} index={key}>
               <RenderElement />
             </Trap>

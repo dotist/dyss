@@ -50,19 +50,19 @@ const Layout = ({ children }) => {
   const frameStyles = {
     padding: 0,
     position: `absolute`,
-    transition: "all 800ms ease-out",
+    transition: `transform 200ms ease-out !important`,
   }
-  const frameEffects = {
-    top: false,
-    right: false,
-    bottom: false,
-    left: false,
+  const frameClasses = {
+    top: null,
+    right: null,
+    bottom: null,
+    left: null,
   }
   setGlobal({
     styleVars: styleVars,
     frameStyles: frameStyles,
     typoStyles: typoStyles,
-    frameEffects: frameEffects,
+    frameClasses: frameClasses,
   })
 
   siteData.footer = `© 2002 — ` + new Date().getFullYear()
