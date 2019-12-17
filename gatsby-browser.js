@@ -1,6 +1,7 @@
 const React = require("react")
-const Layout = require("./src/components/layout").default
+// const Layout = require("./src/components/layout").default
+const Frame = require("./src/components/Frame").default
 
 exports.wrapPageElement = ({ element, props }) => {
-  return <Layout {...props}>{element}</Layout>
+  return <Frame {...props}>{element}</Frame>
 }

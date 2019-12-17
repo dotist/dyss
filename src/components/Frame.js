@@ -7,7 +7,16 @@ import * as utils from "../utils.js"
 
 const Frame = props => {
   const { children, data, ...other } = props
-  const styleVars = utils.getState("styleVars")
+  // const styleVars = utils.getState("styleVars")
+  const styleVars = {
+    units: {
+      main: 75,
+    },
+    colors: {
+      bg_1: `#000000`,
+      fg_1: `#ffffff`,
+    },
+  }
   const unit = styleVars.units.main
   const [frameClasses, updateFrameClasses] = useGlobal("frameClasses")
 
@@ -20,43 +29,47 @@ const Frame = props => {
   }
   const duration = 100
   const frameClass = "frame-element-active"
+
+  const test = setGlobal({ testItem: 0 })
+
   useEffect(() => {
     frameLoop(duration)
       .then(result => {
-        frameClasses.top = frameClass
+        // frameClasses.top = frameClass
         updateFrameClasses(frameClasses)
         return frameLoop(duration)
       })
       .then(result => {
-        frameClasses.right = frameClass
+        // frameClasses.right = frameClass
         updateFrameClasses(frameClasses)
         return frameLoop(duration)
       })
       .then(result => {
-        frameClasses.bottom = frameClass
+        // frameClasses.bottom = frameClass
         updateFrameClasses(frameClasses)
         return frameLoop(duration)
       })
       .then(result => {
-        frameClasses.left = frameClass
+        // frameClasses.left = frameClass
         updateFrameClasses(frameClasses)
+        console.log(test)
         return true
       })
   }, [true])
 
   const elements = {
     top: {
-      children: data.title,
+      // children: data.title,
       styles: {
         top: 0,
         left: 0,
         height: `${unit}px`,
         width: `100%`,
-        transform: frameClasses.top ? "" : `translateY(-${unit}px)`,
+        transform: `translateY(-${unit}px)`,
       },
     },
     right: {
-      children: data.right,
+      // children: data.right,
       rotate: `180deg`,
       styles: {
         right: 0,
@@ -67,7 +80,7 @@ const Frame = props => {
       },
     },
     bottom: {
-      children: data.footer,
+      // children: data.footer,
       rotate: `180deg`,
       styles: {
         right: 0,
@@ -78,7 +91,7 @@ const Frame = props => {
       },
     },
     left: {
-      children: data.left,
+      // children: data.left,
       rotate: `0deg`,
       styles: {
         left: 0,
@@ -130,7 +143,19 @@ const Frame = props => {
           }
         }
         return (
-          <div className={frameClasses[key]} null key={key}>
+          // <div className={frameClasses[key]} key={key}>
+          <div>
+            <div
+              style={{
+                margin: `100px`,
+                background: `pink`,
+                transform: `translateY(${test})`,
+                transition: `transform 1000ms`,
+              }}
+            >
+              &nbsp;
+            </div>
+
             <Trap key={key} element={element} styleVars={styleVars} index={key}>
               <RenderElement />
             </Trap>

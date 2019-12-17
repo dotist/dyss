@@ -1,4 +1,4 @@
-import React, { useGlobal, setGlobal } from "reactn"
+import React, { useGlobal, setGlobal, useEffect } from "reactn"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import { makeStyles } from "@material-ui/core/styles"
@@ -70,60 +70,53 @@ const Layout = ({ children }) => {
   // siteData.left = `werdender`
   siteData.right = ``
   siteData.left = ``
+
   return (
     <>
-      <Frame
-        data={siteData}
-        style={{
-          position: `relative`,
-          overflow: `hidden`,
-        }}
-      >
-        <Header title={siteData.title} />
-        <div style={{}}>
-          <h1
+      <Header title={siteData.title} />
+      <div style={{}}>
+        <h1
+          style={{
+            ...typoStyles,
+            ...{
+              color: styleVars.colors.bg_1,
+              fontSize: `${styleVars.units.main}px`,
+              lineHeight: `${styleVars.units.main}px`,
+              fontStyle: `italic`,
+              textAlign: `center`,
+            },
+          }}
+        >
+          {siteData.title}
+        </h1>
+      </div>
+      <div className={"page-content"}>
+        <main>{children}</main>
+        <footer
+          style={{
+            position: `absolute`,
+            left: 0,
+            bottom: 0,
+            width: `100%`,
+          }}
+        >
+          <Typography
+            variant="h5"
             style={{
               ...typoStyles,
               ...{
-                color: styleVars.colors.bg_1,
-                fontSize: `${styleVars.units.main}px`,
-                lineHeight: `${styleVars.units.main}px`,
-                fontStyle: `italic`,
+                width: `100%`,
                 textAlign: `center`,
+                color: styleVars.colors.bg_1,
+                transform: `rotate(180deg)`,
+                opacity: 0,
               },
             }}
           >
-            {siteData.title}
-          </h1>
-        </div>
-        <div className={"page-content"}>
-          <main>{children}</main>
-          <footer
-            style={{
-              position: `absolute`,
-              left: 0,
-              bottom: 0,
-              width: `100%`,
-            }}
-          >
-            <Typography
-              variant="h5"
-              style={{
-                ...typoStyles,
-                ...{
-                  width: `100%`,
-                  textAlign: `center`,
-                  color: styleVars.colors.bg_1,
-                  transform: `rotate(180deg)`,
-                  opacity: 0,
-                },
-              }}
-            >
-              {siteData.footer}
-            </Typography>
-          </footer>
-        </div>
-      </Frame>
+            {siteData.footer}
+          </Typography>
+        </footer>
+      </div>
     </>
   )
 }
