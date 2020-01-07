@@ -48,7 +48,7 @@ const Trap = props => {
   }
   const frameStyles = utils.getState("frameStyles")
   const trapStyles = {
-    ...element.styles,
+    // ...element.styles,
     ...frameStyles,
   }
   const TrapElement = styled(Container)(trapStyles)
@@ -71,10 +71,16 @@ const Trap = props => {
     padding: 0,
   })
   return (
-    <TrapElement maxWidth={false}>
-      <TrapShape maxWidth={false}>&nbsp;</TrapShape>
-      <TrapInner maxWidth={false}>{children}</TrapInner>
-    </TrapElement>
+    // <TrapElement maxWidth={false} className="trap--wrapper">
+    <>
+      <TrapShape maxWidth={false} className="trap--shape">
+        &nbsp;
+      </TrapShape>
+      <TrapInner maxWidth={false} className="trap--inner">
+        {children}
+      </TrapInner>
+    </>
+    // </TrapElement>
   )
 }
 

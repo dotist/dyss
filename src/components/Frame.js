@@ -1,4 +1,4 @@
-import React, { useGlobal, setGlobal, useEffect } from "reactn"
+import React, { useGlobal, setGlobal, useEffect, useState } from "reactn"
 import PropTypes from "prop-types"
 import Trap from "./Trap"
 import { styled, makeStyles } from "@material-ui/core/styles"
@@ -7,7 +7,6 @@ import * as utils from "../utils.js"
 
 const Frame = props => {
   const { children, data, ...other } = props
-  // const styleVars = utils.getState("styleVars")
   const styleVars = {
     units: {
       main: 75,
@@ -17,9 +16,20 @@ const Frame = props => {
       fg_1: `#ffffff`,
     },
   }
-  const unit = styleVars.units.main
-  const [frameClasses, updateFrameClasses] = useGlobal("frameClasses")
 
+  const [frameClasses, updateFrameClasses] = useState({
+    top: null,
+    right: null,
+    bottom: null,
+    left: null,
+  })
+
+  const unit = styleVars.units.main
+  const frameStylesAll = {
+    padding: 0,
+    position: `absolute`,
+    transition: `transform 200ms ease-out`,
+  }
   const frameLoop = duration => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -30,34 +40,32 @@ const Frame = props => {
   const duration = 100
   const frameClass = "frame-element-active"
 
-  const test = setGlobal({ testItem: 0 })
-
   useEffect(() => {
     frameLoop(duration)
       .then(result => {
-        // frameClasses.top = frameClass
+        frameClasses.top = frameClass
         updateFrameClasses(frameClasses)
         return frameLoop(duration)
       })
       .then(result => {
-        // frameClasses.right = frameClass
+        frameClasses.right = frameClass
         updateFrameClasses(frameClasses)
         return frameLoop(duration)
       })
       .then(result => {
-        // frameClasses.bottom = frameClass
+        frameClasses.bottom = frameClass
         updateFrameClasses(frameClasses)
+        console.log(frameClasses)
         return frameLoop(duration)
       })
       .then(result => {
-        // frameClasses.left = frameClass
+        frameClasses.left = frameClass
         updateFrameClasses(frameClasses)
-        console.log(test)
         return true
       })
-  }, [true])
+  }, [frameClasses])
 
-  const elements = {
+  const frames = {
     top: {
       // children: data.title,
       styles: {
@@ -103,10 +111,24 @@ const Frame = props => {
     },
   }
 
+  const FrameElement = props => {
+    const { frameStylesAll, frame, frameClass, children, ...other } = props
+    return (
+      <div
+        className={frameClass}
+        style={{
+          ...frame.styles,
+          ...frameStylesAll,
+        }}
+      >
+        {children}
+      </div>
+    )
+  }
   return (
     <>
-      {Object.keys(elements).map(key => {
-        const element = elements[key]
+      {Object.keys(frames).map(key => {
+        const frame = frames[key]
         const RenderElement = () => {
           const typoStyles = utils.getState("typoStyles")
           switch (key) {
@@ -120,7 +142,7 @@ const Frame = props => {
                     },
                   }}
                 >
-                  {element.children}
+                  {frame.children}
                 </h1>
               )
             default:
@@ -133,33 +155,29 @@ const Frame = props => {
                       color: styleVars.colors.fg_1,
                       position: `relative`,
                       top: `50%`,
-                      transform: `translateY(-50%) rotate(${element.rotate})`,
+                      transform: `translateY(-50%) rotate(${frame.rotate})`,
                     },
                   }}
                 >
-                  {element.children}
+                  {frame.children}
                 </Typography>
               )
           }
         }
+        {
+          console.log(useState(frameClasses))
+        }
         return (
-          // <div className={frameClasses[key]} key={key}>
-          <div>
-            <div
-              style={{
-                margin: `100px`,
-                background: `pink`,
-                transform: `translateY(${test})`,
-                transition: `transform 1000ms`,
-              }}
-            >
-              &nbsp;
-            </div>
-
-            <Trap key={key} element={element} styleVars={styleVars} index={key}>
+          <FrameElement
+            key={key}
+            frameStylesAll={frameStylesAll}
+            frame={frame}
+            frameClass={frameClasses[key]}
+          >
+            <Trap key={key} element={frame} styleVars={styleVars} index={key}>
               <RenderElement />
             </Trap>
-          </div>
+          </FrameElement>
         )
       })}
       {children}
