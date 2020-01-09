@@ -1,128 +1,83 @@
-import React, { useGlobal, setGlobal, useEffect } from "reactn"
+import React, { useEffect, useState, setGlobal } from "reactn"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
-import { makeStyles } from "@material-ui/core/styles"
+import Edge from "./Edge"
+import { styled, makeStyles } from "@material-ui/core/styles"
 import { Container, Typography } from "@material-ui/core"
-import * as utils from "../utils.js"
-import Frame from "./Frame"
-import Header from "./header"
-import "./layout.css"
-import "./styles.sass"
-
-const useStyles = makeStyles({
-  wrapper: {
-    width: `100%`,
-    height: `100%`,
-    position: `absolute`,
-  },
-})
-
-const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
-
-  const siteData = data.site.siteMetadata
-
-  const styleVars = {
+const Layout = props => {
+  const { children, ...other } = props
+  const global = {
     units: {
-      main: 75,
+      0: 0,
+      1: 74,
+      2: 0,
+      3: 100,
+      4: 1,
+      u0: 0,
+      u1: 74,
+      u2: 100,
+      near: `calc(100% - 4px)`,
+      full: `calc(100% - 4px)`,
+      half: `50%`,
     },
     colors: {
-      bg_1: `#000000`,
-      fg_1: `#ffffff`,
+      1: `#000000`,
+      2: `#ffffff`,
+      3: `grey`,
+      color1: `#000000`,
     },
   }
-
-  const typoStyles = {
-    color: styleVars.colors.fg_1,
-    lineHeight: `${styleVars.units.main}px`,
-    textTransform: `uppercase`,
-    fontStyle: `italic`,
-    letterSpacing: `15px`,
-  }
-  const frameStyles = {
-    padding: 0,
-    position: `absolute`,
-    transition: `transform 200ms ease-out !important`,
-  }
-  const frameClasses = {
+  setGlobal(global)
+  const sides = {
     top: null,
     right: null,
     bottom: null,
     left: null,
   }
-  setGlobal({
-    styleVars: styleVars,
-    frameStyles: frameStyles,
-    typoStyles: typoStyles,
-    frameClasses: frameClasses,
-  })
-
-  siteData.footer = `© 2002 — ` + new Date().getFullYear()
-  // siteData.right = `immer`
-  // siteData.left = `werdender`
-  siteData.right = ``
-  siteData.left = ``
-
+  const [effects, updateEffects] = useState(sides)
+  const keys = Object.keys(sides)
+  setGlobal({ keys: keys })
+  const duration = 150
+  useEffect(() => {
+    keys.reduce(
+      (p, _, i) =>
+        p.then(
+          _ =>
+            new Promise(resolve =>
+              setTimeout(function() {
+                const key = keys[i]
+                const object = effects
+                Object.defineProperty(object, key, {
+                  value: { transform: `translateY(0)`, opacity: 1 },
+                })
+                updateEffects({ ...object })
+                resolve()
+              }, duration)
+            )
+        ),
+      Promise.resolve()
+    )
+  }, [])
   return (
     <>
-      <Header title={siteData.title} />
-      <div style={{}}>
-        <h1
-          style={{
-            ...typoStyles,
-            ...{
-              color: styleVars.colors.bg_1,
-              fontSize: `${styleVars.units.main}px`,
-              lineHeight: `${styleVars.units.main}px`,
-              fontStyle: `italic`,
-              textAlign: `center`,
-            },
-          }}
-        >
-          {siteData.title}
-        </h1>
+      <div
+        style={{
+          position: `fixed`,
+          top: 0,
+          left: 0,
+          height: `100%`,
+          width: `100%`,
+        }}
+      >
+        {keys.map(key => {
+          return (
+            <Edge name={key} key={key} effects={effects}>
+              &nbsp;
+            </Edge>
+          )
+        })}
       </div>
-      <div className={"page-content"}>
-        <main>{children}</main>
-        <footer
-          style={{
-            position: `absolute`,
-            left: 0,
-            bottom: 0,
-            width: `100%`,
-          }}
-        >
-          <Typography
-            variant="h5"
-            style={{
-              ...typoStyles,
-              ...{
-                width: `100%`,
-                textAlign: `center`,
-                color: styleVars.colors.bg_1,
-                transform: `rotate(180deg)`,
-                opacity: 0,
-              },
-            }}
-          >
-            {siteData.footer}
-          </Typography>
-        </footer>
-      </div>
+      {children}
     </>
   )
 }
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-}
-
 export default Layout
