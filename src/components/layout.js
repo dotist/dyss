@@ -1,22 +1,24 @@
 import React, { useEffect, useState, setGlobal } from "reactn"
 import PropTypes from "prop-types"
 import Edge from "./Edge"
-import { styled, makeStyles } from "@material-ui/core/styles"
-import { Container, Typography } from "@material-ui/core"
+import "styles.sass"
 const Layout = props => {
   const { children, ...other } = props
+  const unit = 74
+  const space = 2
   const global = {
     units: {
       0: 0,
-      1: 74,
+      1: unit,
       2: 0,
       3: 100,
       4: 1,
       u0: 0,
-      u1: 74,
+      u1: unit,
       u2: 100,
-      near: `calc(100% - 4px)`,
-      full: `calc(100% - 4px)`,
+      space: space,
+      near: `calc(100% - 16px)`,
+      full: `calc(100% - ${unit}px - ${unit}px - ${space * 4}px)`,
       half: `50%`,
     },
     colors: {
@@ -24,6 +26,8 @@ const Layout = props => {
       2: `#ffffff`,
       3: `grey`,
       color1: `#000000`,
+      color2: `#ffffff`,
+      color3: `grey`,
     },
   }
   setGlobal(global)
@@ -76,7 +80,6 @@ const Layout = props => {
           )
         })}
       </div>
-      {children}
     </>
   )
 }
