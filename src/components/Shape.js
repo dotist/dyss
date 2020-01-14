@@ -8,6 +8,7 @@ const Shape = props => {
   const [units] = useGlobal("units")
   const [colors] = useGlobal("colors")
   const [keys] = useGlobal("keys")
+  const [hoverKey, updateHoverKey] = useGlobal("active")
   const index = keys.indexOf(name)
   const [hover, updateHoverOn] = useState(false)
 
@@ -61,9 +62,13 @@ const Shape = props => {
   }
   const hoverOn = (e, name) => {
     updateHoverOn(true)
+    updateHoverKey(name)
+    // console.log(active)
   }
   const hoverOff = (e, name) => {
     updateHoverOn(false)
+    updateHoverKey(null)
+    // console.log(active)
   }
   return (
     <>

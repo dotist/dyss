@@ -1,7 +1,7 @@
 import React, { useEffect, useState, setGlobal } from "reactn"
 import PropTypes from "prop-types"
 import Edge from "./Edge"
-import "styles.sass"
+import "./styles.sass"
 const Layout = props => {
   const { children, ...other } = props
   const unit = 74
@@ -28,19 +28,22 @@ const Layout = props => {
       color1: `#000000`,
       color2: `#ffffff`,
       color3: `grey`,
+      color4: `#00F`,
+      color5: `#ff0`,
     },
   }
   setGlobal(global)
   const sides = {
-    top: null,
-    right: null,
-    bottom: null,
-    left: null,
+    top: -1,
+    right: -1,
+    bottom: -1,
+    left: -1,
   }
   const [effects, updateEffects] = useState(sides)
   const keys = Object.keys(sides)
   setGlobal({ keys: keys })
-  const duration = 150
+  setGlobal({ active: null })
+  const duration = 100
   useEffect(() => {
     keys.reduce(
       (p, _, i) =>
@@ -50,9 +53,7 @@ const Layout = props => {
               setTimeout(function() {
                 const key = keys[i]
                 const object = effects
-                Object.defineProperty(object, key, {
-                  value: { transform: `translateY(0)`, opacity: 1 },
-                })
+                Object.defineProperty(object, key, { value: 1 })
                 updateEffects({ ...object })
                 resolve()
               }, duration)
