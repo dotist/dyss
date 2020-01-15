@@ -1,16 +1,13 @@
 import React from "react"
 import { Link } from "gatsby"
+import SEO from "../Seo"
 
-import Layout from "../components/Layout"
 import Image from "../components/image"
-import SEO from "../components/seo"
 
-const IndexPage = () => <SEO title="Home" />
 const page = () => {
   return (
     <>
-      <IndexPage />
-      <Layout />
+      <SEO title="HomePage" />
     </>
   )
 }

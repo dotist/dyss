@@ -12,10 +12,7 @@ const Edge = props => {
   const [hover, updateHover] = useState(false)
   const [hoverKey, updateHoverKey] = useGlobal("active")
   const effectIsSet = effects.hasOwnProperty(name)
-  // const effectIsSet = Object.prototype.hasOwnProperty.call(effects, "name")
   const effect = effectIsSet ? effects[name] : {}
-  // const [effect, updateEffect] = useState(effectIsSet ? effects[name] : {})
-  console.log(effect)
   const [click, updateClick] = useState(false)
 
   const getStyles = props => {
@@ -39,17 +36,8 @@ const Edge = props => {
       return index % 2 ? `${u1}px` : `100%`
     }
     const transform = () => {
+      const u = click == true || effect == -1 || effect == 0 ? u1 + space : u0
       let s = ``
-      const unit = () => {
-        switch (effect) {
-          case -1:
-          case 0:
-            return u1 + space
-          default:
-            return u0
-        }
-      }
-      const u = unit()
       switch (name) {
         case "top":
           s = `translateY(-${u}px)`
@@ -73,7 +61,7 @@ const Edge = props => {
       return a.join(" ")
     }
     const opacity = () => {
-      if (click == true || effect == -1 || effect == 0) return 0
+      if (effect == -1) return 0
       else return 1
     }
     return {
@@ -121,8 +109,7 @@ const Edge = props => {
 
     setTimeout(function() {
       updateClick(false)
-    }, 200)
-    console.log(name)
+    }, 900)
   }
 
   const Inner = props => {

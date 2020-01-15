@@ -1,188 +1,88 @@
-import React, { useGlobal, setGlobal, useEffect, useState } from "reactn"
+import React, { useEffect, useState, setGlobal } from "reactn"
 import PropTypes from "prop-types"
-import Trap from "./Trap"
-import { styled, makeStyles } from "@material-ui/core/styles"
-import { Container, Typography } from "@material-ui/core"
-import * as utils from "../utils.js"
-
+import Edge from "./Edge"
+import "./styles.sass"
 const Frame = props => {
-  const { children, data, ...other } = props
-  const styleVars = {
+  const { children, ...other } = props
+  const unit = 74
+  const space = 2
+  const global = {
     units: {
-      main: 75,
+      0: 0,
+      1: unit,
+      2: 0,
+      3: 100,
+      4: 1,
+      u0: 0,
+      u1: unit,
+      u2: 100,
+      space: space,
+      near: `calc(100% - 16px)`,
+      full: `calc(100% - ${unit}px - ${unit}px - ${space * 4}px)`,
+      half: `50%`,
     },
     colors: {
-      bg_1: `#000000`,
-      fg_1: `#ffffff`,
+      1: `#000000`,
+      2: `#ffffff`,
+      3: `grey`,
+      color1: `#000000`,
+      color2: `#ffffff`,
+      color3: `grey`,
+      color4: `#00F`,
+      color5: `#ff0`,
     },
   }
-
-  const [frameClasses, updateFrameClasses] = useState({
-    top: null,
-    right: null,
-    bottom: null,
-    left: null,
-  })
-
-  const unit = styleVars.units.main
-  const frameStylesAll = {
-    padding: 0,
-    position: `absolute`,
-    transition: `transform 200ms ease-out`,
+  setGlobal(global)
+  const sides = {
+    top: -1,
+    right: -1,
+    bottom: -1,
+    left: -1,
   }
-  const frameLoop = duration => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(duration)
-      }, duration)
-    })
-  }
+  const [effects, updateEffects] = useState(sides)
+  const keys = Object.keys(sides)
+  setGlobal({ keys: keys })
+  setGlobal({ active: null })
   const duration = 100
-  const frameClass = "frame-element-active"
-
   useEffect(() => {
-    frameLoop(duration)
-      .then(result => {
-        frameClasses.top = frameClass
-        updateFrameClasses(frameClasses)
-        return frameLoop(duration)
-      })
-      .then(result => {
-        frameClasses.right = frameClass
-        updateFrameClasses(frameClasses)
-        return frameLoop(duration)
-      })
-      .then(result => {
-        frameClasses.bottom = frameClass
-        updateFrameClasses(frameClasses)
-        console.log(frameClasses)
-        return frameLoop(duration)
-      })
-      .then(result => {
-        frameClasses.left = frameClass
-        updateFrameClasses(frameClasses)
-        return true
-      })
-  }, [frameClasses])
-
-  const frames = {
-    top: {
-      // children: data.title,
-      styles: {
-        top: 0,
-        left: 0,
-        height: `${unit}px`,
-        width: `100%`,
-        transform: `translateY(-${unit}px)`,
-      },
-    },
-    right: {
-      // children: data.right,
-      rotate: `180deg`,
-      styles: {
-        right: 0,
-        top: 0,
-        height: `100%`,
-        width: `${unit}px`,
-        transform: `translateX(${unit}px)`,
-      },
-    },
-    bottom: {
-      // children: data.footer,
-      rotate: `180deg`,
-      styles: {
-        right: 0,
-        bottom: 0,
-        width: `100%`,
-        height: `${unit}px`,
-        transform: `translateY(${unit}px)`,
-      },
-    },
-    left: {
-      // children: data.left,
-      rotate: `0deg`,
-      styles: {
-        left: 0,
-        top: 0,
-        height: `100%`,
-        width: `${unit}px`,
-        transform: `translateX(-${unit}px)`,
-      },
-    },
-  }
-
-  const FrameElement = props => {
-    const { frameStylesAll, frame, frameClass, children, ...other } = props
-    return (
-      <div
-        className={frameClass}
-        style={{
-          ...frame.styles,
-          ...frameStylesAll,
-        }}
-      >
-        {children}
-      </div>
+    keys.reduce(
+      (p, _, i) =>
+        p.then(
+          _ =>
+            new Promise(resolve =>
+              setTimeout(function() {
+                const key = keys[i]
+                const object = effects
+                Object.defineProperty(object, key, { value: 1 })
+                updateEffects({ ...object })
+                resolve()
+              }, duration)
+            )
+        ),
+      Promise.resolve()
     )
-  }
+  }, [])
   return (
     <>
-      {Object.keys(frames).map(key => {
-        const frame = frames[key]
-        const RenderElement = () => {
-          const typoStyles = utils.getState("typoStyles")
-          switch (key) {
-            case "top":
-              return (
-                <h1
-                  style={{
-                    ...typoStyles,
-                    ...{
-                      fontSize: `${unit}px`,
-                    },
-                  }}
-                >
-                  {frame.children}
-                </h1>
-              )
-            default:
-              return (
-                <Typography
-                  variant="h5"
-                  style={{
-                    ...typoStyles,
-                    ...{
-                      color: styleVars.colors.fg_1,
-                      position: `relative`,
-                      top: `50%`,
-                      transform: `translateY(-50%) rotate(${frame.rotate})`,
-                    },
-                  }}
-                >
-                  {frame.children}
-                </Typography>
-              )
-          }
-        }
-        {
-          console.log(useState(frameClasses))
-        }
-        return (
-          <FrameElement
-            key={key}
-            frameStylesAll={frameStylesAll}
-            frame={frame}
-            frameClass={frameClasses[key]}
-          >
-            <Trap key={key} element={frame} styleVars={styleVars} index={key}>
-              <RenderElement />
-            </Trap>
-          </FrameElement>
-        )
-      })}
-      {children}
+      <div
+        className="edges"
+        style={{
+          position: `fixed`,
+          top: 0,
+          left: 0,
+          height: `100%`,
+          width: `100%`,
+        }}
+      >
+        {keys.map(key => {
+          return (
+            <Edge name={key} key={key} effects={effects}>
+              &nbsp;
+            </Edge>
+          )
+        })}
+      </div>
     </>
   )
 }
-
 export default Frame

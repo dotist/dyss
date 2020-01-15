@@ -1,6 +1,6 @@
 const React = require("react")
-const Layout = require("./src/components/Layout").default
-import("./src/components/styles.sass")
+const Frame = require("./src/components/Frame").default
+
 exports.wrapPageElement = ({ element, props }) => {
-  return <Layout {...props}>{element}</Layout>
+  return <Frame {...props}>{element}</Frame>
 }
