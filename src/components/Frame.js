@@ -1,37 +1,10 @@
-import React, { useEffect, useState, setGlobal } from "reactn"
+import React, { useEffect, useState, setGlobal, useGlobal } from "reactn"
 import PropTypes from "prop-types"
+import "./Styles.js"
 import Edge from "./Edge"
 import "./styles.sass"
 const Frame = props => {
   const { children, ...other } = props
-  const unit = 74
-  const space = 2
-  const global = {
-    units: {
-      0: 0,
-      1: unit,
-      2: 0,
-      3: 100,
-      4: 1,
-      u0: 0,
-      u1: unit,
-      u2: 100,
-      space: space,
-      near: `calc(100% - 16px)`,
-      full: `calc(100% - ${unit}px - ${unit}px - ${space * 4}px)`,
-      half: `50%`,
-    },
-    colors: {
-      1: `#000000`,
-      2: `#ffffff`,
-      3: `grey`,
-      color1: `#000000`,
-      color2: `#ffffff`,
-      color3: `grey`,
-      color4: `#00F`,
-      color5: `#ff0`,
-    },
-  }
   setGlobal(global)
   const sides = {
     top: -1,
@@ -65,9 +38,10 @@ const Frame = props => {
   return (
     <>
       <div
-        className="edges"
+        className="frame"
         style={{
           position: `fixed`,
+          // opacity: 0,
           top: 0,
           left: 0,
           height: `100%`,
@@ -82,6 +56,7 @@ const Frame = props => {
           )
         })}
       </div>
+      {children}
     </>
   )
 }

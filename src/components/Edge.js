@@ -7,6 +7,7 @@ const Edge = props => {
 
   const [units] = useGlobal("units")
   const [colors] = useGlobal("colors")
+  const [elementStyles] = useGlobal("elementStyles")
   const [keys] = useGlobal("keys")
   const index = keys.indexOf(name)
   const [hover, updateHover] = useState(false)
@@ -85,14 +86,8 @@ const Edge = props => {
     cursor: `pointer`,
   }
   const innerStyle = {
-    fontSize: `${units["u1"]}px`,
-    color: hover == false ? colors["color4"] : colors["color5"],
-    margin: `0 auto`,
-    display: `inline`,
-    letterSpacing: `${units["u1"] / 2}px`,
-    lineHeight: 0,
-    top: `${units["u1"] / 2}px`,
-    position: `relative`,
+    ...elementStyles.h1[1],
+    ...{ color: hover == false ? colors["color4"] : colors["color5"] },
   }
   const edgeStyle = getStyles({ ...units, ...colors })
   const hoverOn = (e, name) => {
