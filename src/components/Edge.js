@@ -81,7 +81,6 @@ const Edge = props => {
     position: `fixed`,
     transition: `transform ${units[3]}ms cubic-bezier(0.785, 0.135, 0.15, 0.86), 
       opacity ${units[3]}ms ease-in`,
-    // opacity: 0,
     textAlign: `center`,
     cursor: `pointer`,
   }

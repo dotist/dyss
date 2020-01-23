@@ -1,6 +1,6 @@
 import React, { useEffect, useState, setGlobal, useGlobal } from "reactn"
 import PropTypes from "prop-types"
-import "./Styles.js"
+import Styles from "./Styles.js"
 import Edge from "./Edge"
 import "./styles.sass"
 const Frame = props => {
@@ -16,24 +16,27 @@ const Frame = props => {
   const keys = Object.keys(sides)
   setGlobal({ keys: keys })
   setGlobal({ active: null })
+
   const duration = 100
   useEffect(() => {
-    keys.reduce(
-      (p, _, i) =>
-        p.then(
-          _ =>
-            new Promise(resolve =>
-              setTimeout(function() {
-                const key = keys[i]
-                const object = effects
-                Object.defineProperty(object, key, { value: 1 })
-                updateEffects({ ...object })
-                resolve()
-              }, duration)
-            )
-        ),
-      Promise.resolve()
-    )
+    setTimeout(function() {
+      keys.reduce(
+        (p, _, i) =>
+          p.then(
+            _ =>
+              new Promise(resolve =>
+                setTimeout(function() {
+                  const key = keys[i]
+                  const object = effects
+                  Object.defineProperty(object, key, { value: 1 })
+                  updateEffects({ ...object })
+                  resolve()
+                }, duration)
+              )
+          ),
+        Promise.resolve()
+      )
+    }, 500)
   }, [])
   return (
     <>
@@ -48,6 +51,7 @@ const Frame = props => {
           width: `100%`,
         }}
       >
+        <Styles />
         {keys.map(key => {
           return (
             <Edge name={key} key={key} effects={effects}>
