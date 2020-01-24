@@ -1,10 +1,10 @@
 import React, { useState, useGlobal } from "reactn"
+import Menu from "./Menu"
 
 const Layout = props => {
   const { children, ...other } = props
   const [colors, updateColors] = useGlobal("colors")
   const randomColor = useGlobal("randomColor")
-  console.log(randomColor)
   const [elementStyles] = useGlobal("elementStyles")
   const [hover, updateHover] = useState(null)
   const hoverOn = (e, name) => {
@@ -40,6 +40,8 @@ const Layout = props => {
           </h1>
         </a>
       </header>
+      <Menu />
+
       <div>{children}</div>
     </>
   )

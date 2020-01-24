@@ -2,9 +2,13 @@ import React, { setGlobal, useEffect, useState } from "reactn"
 const getColor = props => {
   return "#" + Math.floor(Math.random() * 16777215).toString(16)
 }
+const getInterval = (i, e) => {
+  return Math.floor(Math.random() * e) + i
+}
 
 const Styles = props => {
   const [randomColor, updateRandomColor] = useState(getColor())
+  const [randomInterval, updateRandomInterval] = useState(200)
   setGlobal({ randomColor: randomColor })
   const unit = 74
   const space = 2
@@ -54,14 +58,11 @@ const Styles = props => {
     },
   })
   useEffect(() => {
-    setTimeout(
-      () =>
-        function() {
-          updateRandomColor(getColor)
-          console.log(randomColor)
-        },
-      500
-    )
+    const timer = setTimeout(() => {
+      updateRandomColor(getColor)
+      updateRandomInterval(getInterval(1, 100) * 10)
+    }, randomInterval)
+    return () => clearTimeout(timer)
   })
   return null
 }
