@@ -11,7 +11,6 @@ const Layout = props => {
     updateHover(name)
   }
   const hoverOff = (e, name) => {
-    console.log("off")
     updateHover(null)
   }
   const click = (e, name) => {}
@@ -32,7 +31,7 @@ const Layout = props => {
             style={{
               ...elementStyles.h1[1],
               ...{
-                color: hover == "header" ? colors["color4"] : randomColor[0],
+                color: hover == "header" ? colors["color3"] : randomColor[0],
               },
             }}
           >

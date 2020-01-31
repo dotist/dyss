@@ -5,7 +5,7 @@ import Edge from "./Edge"
 import "./styles.sass"
 const Frame = props => {
   const { children, ...other } = props
-  setGlobal(global)
+  // setGlobal(global)
   const sides = {
     top: -1,
     right: -1,

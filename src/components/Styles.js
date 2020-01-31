@@ -9,6 +9,9 @@ const getInterval = (i, e) => {
 const Styles = props => {
   const [randomColor, updateRandomColor] = useState(getColor())
   const [randomInterval, updateRandomInterval] = useState(200)
+  const [pulseStep, updatePulseStep] = useState(0)
+  const [pulseIndex, updatePulseIndex] = useState(0)
+  const [hoverColor, updateHoverColor] = useState(getColor())
   setGlobal({ randomColor: randomColor })
   const unit = 74
   const space = 2
@@ -20,7 +23,7 @@ const Styles = props => {
     4: 1,
     u0: 0,
     u1: unit,
-    u2: 100,
+    u2: 50,
     space: space,
     near: `calc(100% - 16px)`,
     full: `calc(100% - ${unit}px - ${unit}px - ${space * 4}px)`,
@@ -31,13 +34,13 @@ const Styles = props => {
     2: `#ffffff`,
     3: `grey`,
     random: randomColor,
+    hover: hoverColor,
     color1: `#000000`,
     color2: `#ffffff`,
     color3: `grey`,
     color4: `#00F`,
     color5: `#ff0`,
   }
-
   setGlobal({
     units: units,
     colors: colors,
@@ -57,12 +60,24 @@ const Styles = props => {
       },
     },
   })
+  const intervals = [100, 3000]
+  const steps = 4
   useEffect(() => {
     const timer = setTimeout(() => {
       updateRandomColor(getColor)
       updateRandomInterval(getInterval(1, 100) * 10)
-    }, randomInterval)
-    return () => clearTimeout(timer)
+      const nextIndex = pulseStep < steps ? 0 : 1
+      if (pulseStep === steps) {
+        updateHoverColor(getColor())
+        updatePulseStep(0)
+      } else {
+        updatePulseStep(pulseStep + 1)
+      }
+      updatePulseIndex(nextIndex)
+    }, intervals[pulseIndex])
+    return () => {
+      clearTimeout(timer)
+    }
   })
   return null
 }

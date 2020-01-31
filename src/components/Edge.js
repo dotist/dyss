@@ -113,7 +113,12 @@ const Edge = props => {
         return <h1 style={styles}>DYSS.NET</h1>
       case "bottom":
         return (
-          <h3 style={{ ...styles, fontSize: `${units["u1"] / 2}px` }}>
+          <h3
+            style={{ ...styles, fontSize: `${units["u1"] / 2}px` }}
+            onMouseEnter={e => hoverOn(e, name)}
+            onMouseLeave={e => hoverOff(e, name)}
+            onClick={e => onClick(e, name)}
+          >
             2002 — {new Date().getFullYear()}
           </h3>
         )
