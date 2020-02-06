@@ -1,6 +1,8 @@
 import React, { useGlobal, setGlobal, useEffect, useState } from "reactn"
 import PropTypes from "prop-types"
 import Shape from "./Shape"
+import Styles from "./Styles"
+import * as utils from "../utils.js"
 
 const Edge = props => {
   const { name, effects, children, ...other } = props
@@ -15,26 +17,27 @@ const Edge = props => {
   const effectIsSet = effects.hasOwnProperty(name)
   const effect = effectIsSet ? effects[name] : {}
   const [click, updateClick] = useState(false)
+  const [randomColor, updateRandomColor] = useState(utils.getColor())
 
   const getStyles = props => {
     const { u0, u1, space, ...other } = props
     const top = () => {
-      return name == "bottom" ? `unset` : 0
+      return name == "bottom" ? `unset` : `${space}px`
     }
     const bottom = () => {
-      return name == "bottom" ? 0 : `unset`
+      return name == "bottom" ? `${space}px` : `unset`
     }
     const left = () => {
-      return name == "right" ? `unset` : `${u0}px`
+      return name == "right" ? `unset` : `${space}px`
     }
     const right = () => {
-      return name == "right" ? `${u0}px` : `unset`
+      return name == "right" ? `${space}px` : `unset`
     }
     const height = () => {
-      return index % 2 ? `100%` : `${u1}px`
+      return index % 2 ? `calc(100% - ${space * 2}px)` : `${u1}px`
     }
     const width = () => {
-      return index % 2 ? `${u1}px` : `100%`
+      return index % 2 ? `${u1}px` : `calc(100% - ${space * 2}px)`
     }
     const transform = () => {
       const u = click == true || effect == -1 || effect == 0 ? u1 + space : u0
@@ -86,7 +89,10 @@ const Edge = props => {
   }
   const innerStyle = {
     ...elementStyles.h1[1],
-    ...{ color: hover == false ? colors["color4"] : colors["color5"] },
+    ...{
+      color: hover == false ? randomColor : colors["color5"],
+      transition: `all 1000ms linear`,
+    },
   }
   const edgeStyle = getStyles({ ...units, ...colors })
   const hoverOn = (e, name) => {
@@ -105,6 +111,13 @@ const Edge = props => {
       updateClick(false)
     }, 900)
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updateRandomColor(utils.getColor())
+    }, 3333)
+    return () => clearTimeout(timer)
+  })
 
   const Inner = props => {
     const { styles } = props
@@ -128,11 +141,14 @@ const Edge = props => {
   }
   return (
     <div
+      className={`edge`}
       style={{
         color: `transparent`,
         ...styles,
         ...edgeStyle,
         ...effect,
+        overflow: `hidden`,
+        // backgroundColor: `#fccabf`,
       }}
       onMouseEnter={e => hoverOn(e, name)}
       onMouseLeave={e => hoverOff(e, name)}

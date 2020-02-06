@@ -1,7 +1,14 @@
-import React, { useGlobal, useState, setState, setGlobal } from "reactn"
+import React, {
+  useGlobal,
+  useState,
+  setState,
+  setGlobal,
+  useEffect,
+} from "reactn"
 import PropTypes from "prop-types"
 import { styled, makeStyles, createMuiTheme } from "@material-ui/core/styles"
 import { Container, Typography } from "@material-ui/core"
+import * as utils from "../utils.js"
 
 const Shape = props => {
   const { name, children, ...other } = props
@@ -11,13 +18,15 @@ const Shape = props => {
   const [hoverKey, updateHoverKey] = useGlobal("active")
   const index = keys.indexOf(name)
   const [hover, updateHoverOn] = useState(false)
+  const [randomColor, updateRandomColor] = useState(colors["color4"])
 
   const getShapeStyles = props => {
     const { u0, u1, u2, full, half, color1, color2, color3, ...other } = props
     const transparent = `transparent`
     const borderColor = a => {
       keys.map(s => {
-        const color = hover != true ? color1 : color3
+        const color = hover != true ? randomColor : color3
+        // const color = hover != true ? color1 : color3
         a.push(s == name ? color : transparent)
       })
       return a.join(" ")
@@ -50,11 +59,12 @@ const Shape = props => {
   const shapeStyle = getShapeStyles({ ...units, ...colors })
   const styles = {
     padding: 0,
+    opacity: hover == false ? 0.7 : 1,
     position: `absolute`,
     borderStyle: `solid`,
     margin: `auto`,
     color: `transparent`,
-    transition: `all 100ms ease-in`,
+    transition: `all 800ms ease-in`,
     cursor: `pointer`,
     fontSize: `2em`,
     display: `block`,
@@ -63,13 +73,17 @@ const Shape = props => {
   const hoverOn = (e, name) => {
     updateHoverOn(true)
     updateHoverKey(name)
-    // console.log(active)
   }
   const hoverOff = (e, name) => {
     updateHoverOn(false)
     updateHoverKey(null)
-    // console.log(active)
   }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updateRandomColor(utils.getColor())
+    }, 3000)
+    return () => clearTimeout(timer)
+  })
   return (
     <>
       <div

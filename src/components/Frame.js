@@ -44,7 +44,6 @@ const Frame = props => {
         className="frame"
         style={{
           position: `fixed`,
-          // opacity: 0,
           top: 0,
           left: 0,
           height: `100%`,
