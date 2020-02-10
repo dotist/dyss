@@ -2,12 +2,7 @@ import React, { setGlobal, useEffect, useState } from "reactn"
 import * as utils from "../utils.js"
 
 const Styles = props => {
-  const [randomColor, updateRandomColor] = useState(utils.getColor())
-  const [randomInterval, updateRandomInterval] = useState(200)
-  const [pulseStep, updatePulseStep] = useState(0)
-  const [pulseIndex, updatePulseIndex] = useState(0)
   const [hoverColor, updateHoverColor] = useState(utils.getColor())
-  setGlobal({ randomColor: randomColor })
   const unit = 274
   const space = 2
   const units = {
@@ -29,7 +24,7 @@ const Styles = props => {
     1: `#000000`,
     2: `#ffffff`,
     3: `grey`,
-    random: randomColor,
+    random: utils.getColor(),
     hover: hoverColor,
     color1: `#000000`,
     color2: `#ffffff`,
@@ -51,7 +46,6 @@ const Styles = props => {
           lineHeight: 0,
           top: `${units["u1"] / 2}px`,
           position: `relative`,
-          transition: `color ${units["u3"]}ms ease-in`,
         },
       },
     },

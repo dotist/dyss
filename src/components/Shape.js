@@ -1,13 +1,5 @@
-import React, {
-  useGlobal,
-  useState,
-  setState,
-  setGlobal,
-  useEffect,
-} from "reactn"
+import React, { useGlobal, useState, useEffect } from "reactn"
 import PropTypes from "prop-types"
-import { styled, makeStyles, createMuiTheme } from "@material-ui/core/styles"
-import { Container, Typography } from "@material-ui/core"
 import * as utils from "../utils.js"
 
 const Shape = props => {
@@ -84,6 +76,7 @@ const Shape = props => {
     }, 3000)
     return () => clearTimeout(timer)
   })
+
   return (
     <>
       <div

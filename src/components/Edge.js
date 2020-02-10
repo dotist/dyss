@@ -1,6 +1,7 @@
 import React, { useGlobal, setGlobal, useEffect, useState } from "reactn"
 import PropTypes from "prop-types"
 import Shape from "./Shape"
+import EdgeInner from "./EdgeInner"
 import Styles from "./Styles"
 import * as utils from "../utils.js"
 
@@ -17,7 +18,6 @@ const Edge = props => {
   const effectIsSet = effects.hasOwnProperty(name)
   const effect = effectIsSet ? effects[name] : {}
   const [click, updateClick] = useState(false)
-  const [randomColor, updateRandomColor] = useState(utils.getColor())
 
   const getStyles = props => {
     const { u0, u1, space, ...other } = props
@@ -58,12 +58,12 @@ const Edge = props => {
       }
       return s
     }
-    const padding = a => {
-      keys.map(s => {
-        a.push(s == name ? `${space}px` : 0)
-      })
-      return a.join(" ")
-    }
+    // const padding = a => {
+    //   keys.map(s => {
+    //     a.push(s == name ? `${space}px` : 0)
+    //   })
+    //   return a.join(" ")
+    // }
     const opacity = () => {
       if (effect == -1) return 0
       else return 1
@@ -76,7 +76,7 @@ const Edge = props => {
       height: height(),
       width: width(),
       transform: transform(),
-      padding: padding([]),
+      // padding: padding([]),
       opacity: opacity(),
     }
   }
@@ -86,13 +86,6 @@ const Edge = props => {
       opacity ${units[3]}ms ease-in`,
     textAlign: `center`,
     cursor: `pointer`,
-  }
-  const innerStyle = {
-    ...elementStyles.h1[1],
-    ...{
-      color: hover == false ? randomColor : colors["color5"],
-      transition: `all 1000ms linear`,
-    },
   }
   const edgeStyle = getStyles({ ...units, ...colors })
   const hoverOn = (e, name) => {
@@ -112,33 +105,14 @@ const Edge = props => {
     }, 900)
   }
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updateRandomColor(utils.getColor())
-    }, 3333)
-    return () => clearTimeout(timer)
-  })
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     updateRandomColor(utils.getColor())
+  //     console.log(randomColor)
+  //   }, 3000)
+  //   return () => clearTimeout(timer)
+  // })
 
-  const Inner = props => {
-    const { styles } = props
-    switch (name) {
-      case "top":
-        return <h1 style={styles}>DYSS.NET</h1>
-      case "bottom":
-        return (
-          <h3
-            style={{ ...styles, fontSize: `${units["u1"] / 2}px` }}
-            onMouseEnter={e => hoverOn(e, name)}
-            onMouseLeave={e => hoverOff(e, name)}
-            onClick={e => onClick(e, name)}
-          >
-            2002 — {new Date().getFullYear()}
-          </h3>
-        )
-      default:
-        return `&nbsp;`
-    }
-  }
   return (
     <div
       className={`edge`}
@@ -155,7 +129,7 @@ const Edge = props => {
       onClick={e => onClick(e, name)}
     >
       <Shape name={name} />
-      <Inner styles={innerStyle} />
+      <EdgeInner name={name} />
     </div>
   )
 }
