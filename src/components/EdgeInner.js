@@ -1,6 +1,6 @@
 import React, { useGlobal, setGlobal, useEffect, useState } from "reactn"
 import PropTypes from "prop-types"
-import Styles from "./Styles"
+// import Styles from "./Styles"
 import * as utils from "../utils.js"
 
 const EdgeInner = props => {
@@ -15,7 +15,7 @@ const EdgeInner = props => {
   // const effectIsSet = effects.hasOwnProperty(name)
   // const effect = effectIsSet ? effects[name] : {}
   const [click, updateClick] = useState(false)
-  const [randomColor, updateRandomColor] = useState(utils.getColor())
+  const [randomColor, updateRandomColor] = useGlobal(randomColor)
   useEffect(() => {
     const timer = setTimeout(() => {
       updateRandomColor(utils.getColor())

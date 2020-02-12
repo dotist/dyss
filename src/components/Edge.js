@@ -2,7 +2,7 @@ import React, { useGlobal, setGlobal, useEffect, useState } from "reactn"
 import PropTypes from "prop-types"
 import Shape from "./Shape"
 import EdgeInner from "./EdgeInner"
-import Styles from "./Styles"
+// import Styles from "./Styles"
 import * as utils from "../utils.js"
 
 const Edge = props => {
@@ -19,6 +19,7 @@ const Edge = props => {
   const effect = effectIsSet ? effects[name] : {}
   const [click, updateClick] = useState(false)
 
+  console.log(colors)
   const getStyles = props => {
     const { u0, u1, space, ...other } = props
     const top = () => {
@@ -58,12 +59,6 @@ const Edge = props => {
       }
       return s
     }
-    // const padding = a => {
-    //   keys.map(s => {
-    //     a.push(s == name ? `${space}px` : 0)
-    //   })
-    //   return a.join(" ")
-    // }
     const opacity = () => {
       if (effect == -1) return 0
       else return 1
@@ -129,7 +124,7 @@ const Edge = props => {
       onClick={e => onClick(e, name)}
     >
       <Shape name={name} />
-      <EdgeInner name={name} />
+      {/* <EdgeInner name={name} /> */}
     </div>
   )
 }

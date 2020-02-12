@@ -1,11 +1,13 @@
 import React, { useEffect, useState, setGlobal, useGlobal } from "reactn"
 import PropTypes from "prop-types"
-import Styles from "./Styles.js"
+import * as utils from "../utils.js"
+import * as styles from "../styles.js"
 import Edge from "./Edge"
 import "./styles.sass"
 const Frame = props => {
   const { children, ...other } = props
-  // setGlobal(global)
+  const globalStyles = styles.getStyles()
+  setGlobal(styles.getStyles())
   const sides = {
     top: -1,
     right: -1,
@@ -16,7 +18,7 @@ const Frame = props => {
   const keys = Object.keys(sides)
   setGlobal({ keys: keys })
   setGlobal({ active: null })
-
+  setGlobal({ initFrame: false })
   const duration = 100
   useEffect(() => {
     setTimeout(function() {
@@ -38,6 +40,14 @@ const Frame = props => {
       )
     }, 500)
   }, [])
+  useEffect(() => {
+    setTimeout(() => {
+      keys.map(side => {
+        globalStyles.colors[side] = utils.getColor()
+      })
+      setGlobal(globalStyles)
+    }, 3000)
+  })
   return (
     <>
       <div
@@ -51,7 +61,6 @@ const Frame = props => {
           opacity: 0.5,
         }}
       >
-        <Styles />
         {keys.map(key => {
           return (
             <Edge name={key} key={key} effects={effects}>
