@@ -91,15 +91,6 @@ const Edge = props => {
       updateClick(false)
     }, 900)
   }
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     if (name !== activeSide) return
-  //     updateColor(utils.getColor())
-  //   }, 3000)
-  //   return () => clearTimeout(timer)
-  // })
-
   return (
     <div
       className={`edge`}
@@ -121,8 +112,7 @@ const Edge = props => {
       onMouseLeave={e => hoverOff(e, name)}
       onClick={e => onClick(e, name)}
     >
-      <Shape name={name} />
-      {/* <EdgeInner name={name} /> */}
+      {children}
     </div>
   )
 }

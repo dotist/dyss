@@ -26,15 +26,16 @@ const Layout = props => {
       <header
         style={{
           textAlign: `center`,
+          // overflow: `hidden`,
         }}
       >
-        {/*<a
+        <a
           href=""
           style={{ color: `transparent` }}
           onMouseEnter={e => hoverOn(e, "header")}
           onMouseLeave={e => hoverOff(e, "")}
         >
-                    <h1
+          <h1
             style={{
               ...elementStyles.h1[1],
               ...{
@@ -45,9 +46,9 @@ const Layout = props => {
           >
             DYSS.NET
           </h1>
-          </a>*/}
+        </a>
+        <Menu />
       </header>
-      <Menu />
 
       <div>{children}</div>
     </>

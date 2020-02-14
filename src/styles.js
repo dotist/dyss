@@ -39,7 +39,7 @@ export const getStyles = props => {
         fontSize: `${units["u1"]}px`,
         color: colors["color3"],
         margin: `0 auto`,
-        display: `inline`,
+        // display: `inline`,
         letterSpacing: `${units["u1"] / 2}px`,
         lineHeight: 0,
         top: `${units["u1"] / 2}px`,

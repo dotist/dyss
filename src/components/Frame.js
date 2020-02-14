@@ -3,6 +3,8 @@ import PropTypes from "prop-types"
 import * as utils from "../utils.js"
 import * as styles from "../styles.js"
 import Edge from "./Edge"
+import Shape from "./Shape"
+import EdgeInner from "./EdgeInner"
 import "./styles.sass"
 const Frame = props => {
   const { children, ...other } = props
@@ -57,7 +59,8 @@ const Frame = props => {
         {keys.map(key => {
           return (
             <Edge name={key} key={key} effects={effects}>
-              &nbsp;
+              <Shape name={key} />
+              <EdgeInner name={key} />
             </Edge>
           )
         })}

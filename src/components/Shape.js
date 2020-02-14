@@ -15,6 +15,7 @@ const Shape = props => {
   const [hoverKey, updateHoverKey] = useGlobal("active")
   const [color, updateColor] = useState(colors["shape"])
   const [hoverColor, updateHoverColor] = useState(utils.getColor())
+  const activeSide = utils.getState("activeSide")
   const getShapeStyles = props => {
     const { u0, u1, u2, full, half, color1, color2, color3, ...other } = props
     const transparent = `transparent`
@@ -74,21 +75,12 @@ const Shape = props => {
     updateHoverKey(null)
   }
   useEffect(() => {
-    setTimeout(() => {
-      // updateColor(utils.getColor())
-    }, 1000)
-  })
-  useEffect(() => {
     const timer = setTimeout(() => {
+      // if (name == activeSide)
       updateColor(utils.getColor())
     }, 1000)
     return () => clearTimeout(timer)
   }, [])
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     updateRandomColor(utils.getColor())
-  //   }, 3000)
-  // }, [])
   return (
     <>
       <div
