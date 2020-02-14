@@ -7,22 +7,22 @@ const Shape = props => {
   const [units] = useGlobal("units")
   const [colors] = useGlobal("colors")
   const [keys] = useGlobal("keys")
-  const [hoverKey, updateHoverKey] = useGlobal("active")
   const index = keys.indexOf(name)
-  const duration = 300
-  const transition = index * 300 + duration
+  const duration = 200
+  const factor = index * 50
+  const transition = duration + factor
   const [hover, updateHoverOn] = useState(false)
-  const [randomColor, updateRandomColor] = useState(colors["color4"])
-  const shapeColor = colors[name] === "undefined" ? randomColor : colors[name]
-  console.log(shapeColor)
+  const [hoverKey, updateHoverKey] = useGlobal("active")
+  const [color, updateColor] = useState(colors["shape"])
+  const [hoverColor, updateHoverColor] = useState(utils.getColor())
   const getShapeStyles = props => {
     const { u0, u1, u2, full, half, color1, color2, color3, ...other } = props
     const transparent = `transparent`
     const borderColor = a => {
       keys.map(s => {
-        const color = hover != true ? shapeColor : color3
+        const borderColor = hover != true ? color : hoverColor
         // const color = hover != true ? color1 : color3
-        a.push(s == name ? color : transparent)
+        a.push(s == name ? borderColor : transparent)
       })
       return a.join(" ")
     }
@@ -73,6 +73,17 @@ const Shape = props => {
     updateHoverOn(false)
     updateHoverKey(null)
   }
+  useEffect(() => {
+    setTimeout(() => {
+      // updateColor(utils.getColor())
+    }, 1000)
+  })
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updateColor(utils.getColor())
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [])
   // useEffect(() => {
   //   setTimeout(() => {
   //     updateRandomColor(utils.getColor())

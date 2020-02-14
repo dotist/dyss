@@ -8,6 +8,7 @@ const Frame = props => {
   const { children, ...other } = props
   const globalStyles = styles.getStyles()
   setGlobal(styles.getStyles())
+  const [initFrame, updateInitFrame] = useGlobal(null)
   const sides = {
     top: -1,
     right: -1,
@@ -17,7 +18,6 @@ const Frame = props => {
   const [effects, updateEffects] = useState(sides)
   const keys = Object.keys(sides)
   setGlobal({ keys: keys })
-  setGlobal({ active: null })
   setGlobal({ initFrame: false })
   const duration = 100
   useEffect(() => {
@@ -38,16 +38,9 @@ const Frame = props => {
           ),
         Promise.resolve()
       )
+      updateInitFrame(true)
     }, 500)
   }, [])
-  useEffect(() => {
-    setTimeout(() => {
-      keys.map(side => {
-        globalStyles.colors[side] = utils.getColor()
-      })
-      setGlobal(globalStyles)
-    }, 3000)
-  })
   return (
     <>
       <div

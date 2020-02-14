@@ -26,6 +26,7 @@ export const getStyles = props => {
     3: `grey`,
     random: utils.getColor(),
     hover: hoverColor,
+    shape: `#000`,
     color1: `#000000`,
     color2: `#ffffff`,
     color3: `grey`,

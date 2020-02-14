@@ -13,13 +13,13 @@ const Edge = props => {
   const [elementStyles] = useGlobal("elementStyles")
   const [keys] = useGlobal("keys")
   const index = keys.indexOf(name)
+  // const activeSide = useGlobal("activeSide")
   const [hover, updateHover] = useState(false)
   const [hoverKey, updateHoverKey] = useGlobal("active")
   const effectIsSet = effects.hasOwnProperty(name)
   const effect = effectIsSet ? effects[name] : {}
   const [click, updateClick] = useState(false)
 
-  console.log(colors)
   const getStyles = props => {
     const { u0, u1, space, ...other } = props
     const top = () => {
@@ -71,16 +71,8 @@ const Edge = props => {
       height: height(),
       width: width(),
       transform: transform(),
-      // padding: padding([]),
       opacity: opacity(),
     }
-  }
-  const styles = {
-    position: `fixed`,
-    transition: `transform ${units[3]}ms cubic-bezier(0.785, 0.135, 0.15, 0.86), 
-      opacity ${units[3]}ms ease-in`,
-    textAlign: `center`,
-    cursor: `pointer`,
   }
   const edgeStyle = getStyles({ ...units, ...colors })
   const hoverOn = (e, name) => {
@@ -102,8 +94,8 @@ const Edge = props => {
 
   // useEffect(() => {
   //   const timer = setTimeout(() => {
-  //     updateRandomColor(utils.getColor())
-  //     console.log(randomColor)
+  //     if (name !== activeSide) return
+  //     updateColor(utils.getColor())
   //   }, 3000)
   //   return () => clearTimeout(timer)
   // })
@@ -113,7 +105,13 @@ const Edge = props => {
       className={`edge`}
       style={{
         color: `transparent`,
-        ...styles,
+        ...{
+          position: `fixed`,
+          transition: `transform ${units[3]}ms cubic-bezier(0.785, 0.135, 0.15, 0.86), 
+      opacity ${units[3]}ms ease-in`,
+          textAlign: `center`,
+          cursor: `pointer`,
+        },
         ...edgeStyle,
         ...effect,
         overflow: `hidden`,
