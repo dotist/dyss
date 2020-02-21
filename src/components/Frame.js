@@ -60,7 +60,7 @@ const Frame = props => {
           return (
             <Edge name={key} key={key} effects={effects}>
               <Shape name={key} />
-              <EdgeInner name={key} />
+              {/* <EdgeInner name={key} /> */}
             </Edge>
           )
         })}

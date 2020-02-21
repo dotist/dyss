@@ -40,7 +40,7 @@ const EdgeInner = props => {
           onMouseEnter={e => hoverOn(e, name)}
           onMouseLeave={e => hoverOff(e, name)}
         >
-          DYSS.NET
+          DYSS
         </h1>
       )
     case "bottom":
